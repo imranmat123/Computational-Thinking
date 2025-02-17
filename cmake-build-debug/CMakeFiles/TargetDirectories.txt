@@ -1,0 +1,3 @@
+/Users/imranmatloob/CLionProjects/D_and_A/cmake-build-debug/CMakeFiles/D_and_A.dir
+/Users/imranmatloob/CLionProjects/D_and_A/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/imranmatloob/CLionProjects/D_and_A/cmake-build-debug/CMakeFiles/rebuild_cache.dir
