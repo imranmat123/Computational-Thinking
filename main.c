@@ -1,102 +1,62 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#define MAX_SIZE 10
 
-struct stack{
-    int arr[MAX_SIZE];
-    int top;
+struct Node{
+    int data;
+    struct Node* left;
+    struct Node* right;
 };
 
-int push(struct stack *stack, int value){
-    if (stack->top == MAX_SIZE-1){
-        printf("stack is full, cannot add more");
-    }else{
-        stack->top = stack->top +1;
-        stack->arr[stack->top] = value;
+void createNode(struct Node** tree, int value){
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = value;
+    node->right = NULL;
+    node->left = NULL;
+
+    //if tree data is null, than set left and right pointers to null as you are head,
+    if(*tree == NULL){
+        *tree = node;
+        return;
     }
-    return stack->arr[stack->top];
+    struct Node* head = *tree;
+    struct Node* next = head;
 
-}
-
-int pop(struct stack *stack){
-    int popped;
-    if(stack->top == 0){
-        printf("there is nothing in the array");
-        return -1;
-    }else{
-        popped = stack->arr[stack->top -1];
-        stack->top = stack->top -1;
-    }
-    return popped;
-}
-
-int TopVal(struct stack *stack){
-    if(stack->top == 0){
-        printf("there is nothing in the array");
-        return -1;
-    }else{
-        return stack->arr[stack->top-1];
-    }
-}
-
-int* nextGreaterElement(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
-struct stack* stack = (struct stack*)malloc(sizeof(struct stack));
-stack->top = -1;
-int val = 0;
-bool found = false;
-for(int i = 0; i < nums1Size; i++){
-    found = false;
-    int x = nums1[i];
-    for(int j = 0; j< nums2Size; j++){
-        int y = nums2[j];
-        if(x == y){
-            val = nums2[j];
-            for(int d = j+1; d < nums2Size; d++ ){
-                if(val < nums2[d]){
-                    int m = nums2[d];
-                    push(stack, m);
-                    found = true;
-                    break;
-                }
-            }
-            if(found == false){
-                push(stack, -1);
-            }
-            break;
+    while(next != NULL ){
+        head = next;
+        if(node->data > next->data ){
+            next = head->right;
+        }else if(node->data < next->data){
+            next = head->left;
         }
     }
-}
-    int *results = malloc(nums1Size * sizeof(int));
-    for(int q = nums1Size - 1; q >= 0; q--){
-        results[q] = stack->arr[q];
+    if(node->data > head->data){
+        head->right = node;
+    }else if(node->data < head->data){
+        head->left = node;
+    }else if(node->data == head->data){
+        free(node);
+        return;
+    }
     }
 
-    *returnSize = nums1Size;
-    return results;
+
+int searchTree(struct Node* tree, int value){
+    struct Node* head = tree;
+    while(head != NULL){
+    if(head->data == value){
+        return head->data;
+    }else if(value > head->data){
+        head = head->right;
+    } else if(value < head->data){
+        head = head->left;
+    }
+        return -1;
+    }
+
 }
 
 int main(void) {
-    // Test case: Example 1
-    int nums1[] = {4, 1, 2};
-    int nums2[] = {1, 3, 4, 2};
-    int nums1Size = sizeof(nums1) / sizeof(nums1[0]);
-    int nums2Size = sizeof(nums2) / sizeof(nums2[0]);
-    int returnSize = 0;
-
-    int* result = nextGreaterElement(nums1, nums1Size, nums2, nums2Size, &returnSize);
-
-    // Print the result array.
-    printf("Output: [");
-    for (int i = 0; i < returnSize; i++) {
-        printf("%d", result[i]);
-        if (i < returnSize - 1) {
-            printf(", ");
-        }
-    }
-    printf("]\n");
-
-    free(result);
     return 0;
 }
 
