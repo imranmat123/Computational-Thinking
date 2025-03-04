@@ -2,61 +2,65 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-struct Node{
-    int data;
-    struct Node* left;
-    struct Node* right;
-};
 
-void createNode(struct Node** tree, int value){
-    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
-    node->data = value;
-    node->right = NULL;
-    node->left = NULL;
+int heapifiy(int* a, int arraysize){
+    int loop = arraysize;
 
-    //if tree data is null, than set left and right pointers to null as you are head,
-    if(*tree == NULL){
-        *tree = node;
-        return;
-    }
-    struct Node* head = *tree;
-    struct Node* next = head;
+    int parent = arraysize/2;
+    while(loop != 0){
+        int leftLeaf = parent *2 +1;
+        int rightLeaft = parent *2 +2;
 
-    while(next != NULL ){
-        head = next;
-        if(node->data > next->data ){
-            next = head->right;
-        }else if(node->data < next->data){
-            next = head->left;
+        if(rightLeaft < arraysize){
+            if(a[rightLeaft] > a[parent]){
+                int temp = a[parent];
+                a[parent] = a[rightLeaft];
+                a[rightLeaft] = temp;
+            }
         }
-    }
-    if(node->data > head->data){
-        head->right = node;
-    }else if(node->data < head->data){
-        head->left = node;
-    }else if(node->data == head->data){
-        free(node);
-        return;
-    }
+        if(leftLeaf < arraysize){
+            if(a[leftLeaf] > a[parent]){
+                int temp = a[parent];
+                a[parent] = a[leftLeaf];
+                a[leftLeaf] = temp;
+            }
+        }
+
+        if(parent == 0){
+            parent = arraysize/2;
+        }
+        parent--;
+        loop--;
     }
 
-
-int searchTree(struct Node* tree, int value){
-    struct Node* head = tree;
-    while(head != NULL){
-    if(head->data == value){
-        return head->data;
-    }else if(value > head->data){
-        head = head->right;
-    } else if(value < head->data){
-        head = head->left;
-    }
-        return -1;
-    }
-
+    return 0;
 }
 
-int main(void) {
+
+int main() {
+    // Define an example array
+    int testArray[] = {3, 1, 4, 1, 5, 9, 2, 6, 5};
+    int arraySize = sizeof(testArray) / sizeof(testArray[0]);
+
+    // Print the array before heapify
+    printf("Array before heapify:\n");
+    for (int i = 0; i < arraySize; i++) {
+        printf("%d ", testArray[i]);
+    }
+    printf("\n");
+
+
+    // Call your heapify function
+        heapifiy(testArray, arraySize);
+
+
+    // Print the array after heapify
+    printf("Array after heapify:\n");
+    for (int i = 0; i < arraySize; i++) {
+        printf("%d ", testArray[i]);
+    }
+    printf("\n");
+
     return 0;
 }
 
