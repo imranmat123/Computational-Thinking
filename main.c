@@ -3,60 +3,85 @@
 #include <stdbool.h>
 #include <string.h>
 #include <assert.h>
+#include <time.h>
 
-void insert(int a[], int *e, int val){
-    a[*e] = val;
-    (*e)++;
-}
-
-int removeDuplicates(int* nums, int numsSize) {
- int *a = nums;
- int aSize = numsSize;
- int b[aSize];
- int i = 1;
- int e = 1;
- b[0] = a[0];
-
-while(i < aSize){
-    int t = a[i-1];
-    if(t != a[i]){
-        insert(b,&e,a[i]);
+int linear_search(int* a, int target, int sizeOfAray){
+    for(int i=0; i <= sizeOfAray; i++){
+        if (target == a[i]){
+            printf("the target is: %d", a[i]);
+            return 0;
+        }
     }
-    i++;
-}
-int c[e];
-int j=0;
-while(j<e){
-    c[j] = b[j];
-    j++;
+    return -1;
 }
 
-    return *c;
+int create100000Array(int* a){
+    for(int i = 0; i <= 1000000; i++){
+        a[i] = i +1;
+        printf("%d",i);
+        printf("\n");
+    }
+}
+
+int binary_search(int* a, int target, int size){
+    int upper = size -1;
+    int lower = 0;
+
+
+    printf("at index 99 we have %d", a[upper]);
+    printf("\n");
+
+
+    while(lower != upper){
+        int middle = lower + (upper - lower) / 2;
+        if(a[middle] == target){
+            printf("\n");
+            printf("you found the target: %d", a[middle]);
+            printf("\n");
+            return 0;
+        }
+        if(target < a[middle] ){
+            upper = a[middle];
+            if(middle == lower+1){
+                middle = lower;
+            }
+
+        }else if(target > a[middle]){
+            lower = a[middle];
+            if(middle == upper -1){
+                middle = upper;
+            }
+        }
+    }
+    return -1;
 }
 
 int main() {
+    clock_t start, end;
+    double cpu_time_used;
 
+    int b[1000000];
+    create100000Array(b);
+    int size = sizeof(b)/sizeof(b[0]);
 
-    // Input array (sorted array with duplicates)
-    int nums[] = {1, 1, 2, 2, 3, 4, 4, 5};
-    int numsSize = sizeof(nums) / sizeof(nums[0]);
+    start = clock();
+    linear_search(&b, 99999, size);
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Time taken by linear_search: %f seconds\n", cpu_time_used);
 
-    // Expected array after duplicates are removed
-    int expectedNums[] = {1, 2, 3, 4, 5};
-    int expectedSize = sizeof(expectedNums) / sizeof(expectedNums[0]);
+    start = clock();
+    binary_search(&b, 99999, size);
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Time taken by binary_search: %f seconds\n", cpu_time_used);
 
-    // Call your function
-    int k = removeDuplicates(nums, numsSize);
-
-
-    // Test that the first k elements match the expected array
-    for (int i = 0; i < k; i++) {
-        assert(nums[i] == expectedNums[i]);
-    }
-
-    printf("All tests passed! k = %d\n", k);
     return 0;
 }
+
+
+
+
 
 
 
