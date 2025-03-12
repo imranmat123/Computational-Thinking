@@ -4,77 +4,56 @@
 #include <string.h>
 #include <assert.h>
 #include <time.h>
+#include <math.h>
 
-int linear_search(int* a, int target, int sizeOfAray){
-    for(int i=0; i <= sizeOfAray; i++){
-        if (target == a[i]){
-            printf("the target is: %d", a[i]);
-            return 0;
-        }
+int digPow(int n, int p) {
+    int a[10];
+    int size = sizeof(a) / sizeof(a[0]);
+    int i = 0;
+    int sum = 0;
+    int np = p;
+    int d = n;
+    while(n>0){
+        a[i] = n%10;
+        n = n/10;
+        i++;
     }
-    return -1;
+
+    for(int j = i -1; j >= 0; j--){
+            int temp = a[j];
+            sum = sum + pow(temp,np);
+            np++;
+    }
+    int k = sum/d;
+    if(sum % d == 0){
+        return k;
+    }else if(sum % d != 0){
+        return -1;
+    }
+
+    return 0;
 }
 
-int create100000Array(int* a){
-    for(int i = 0; i <= 1000000; i++){
-        a[i] = i +1;
-        printf("%d",i);
-        printf("\n");
-    }
-}
 
-int binary_search(int* a, int target, int size){
-    int upper = size -1;
-    int lower = 0;
-
-
-    printf("at index 99 we have %d", a[upper]);
-    printf("\n");
-
-
-    while(lower != upper){
-        int middle = lower + (upper - lower) / 2;
-        if(a[middle] == target){
-            printf("\n");
-            printf("you found the target: %d", a[middle]);
-            printf("\n");
-            return 0;
-        }
-        if(target < a[middle] ){
-            upper = a[middle];
-            if(middle == lower+1){
-                middle = lower;
-            }
-
-        }else if(target > a[middle]){
-            lower = a[middle];
-            if(middle == upper -1){
-                middle = upper;
-            }
-        }
-    }
-    return -1;
-}
 
 int main() {
-    clock_t start, end;
-    double cpu_time_used;
 
-    int b[1000000];
-    create100000Array(b);
-    int size = sizeof(b)/sizeof(b[0]);
+    // Test case 1
+    int result1 = digPow(89, 1);
+    printf("digPow(89, 1) = %d\n", result1);
 
-    start = clock();
-    linear_search(&b, 99999, size);
-    end = clock();
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("Time taken by linear_search: %f seconds\n", cpu_time_used);
+    // Test case 2
+    int result2 = digPow(92, 1);
+    printf("digPow(92, 1) = %d\n", result2);
 
-    start = clock();
-    binary_search(&b, 99999, size);
-    end = clock();
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("Time taken by binary_search: %f seconds\n", cpu_time_used);
+    // Test case 3
+    int result3 = digPow(695, 2);
+    printf("digPow(695, 2) = %d\n", result3);
+
+    // Test case 4
+    int result4 = digPow(46288, 3);
+    printf("digPow(46288, 3) = %d\n", result4);
+
 
     return 0;
 }
