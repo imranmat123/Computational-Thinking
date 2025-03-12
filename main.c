@@ -5,56 +5,35 @@
 #include <assert.h>
 #include <time.h>
 #include <math.h>
+//1,1,2,3,5,8, 13
 
-int digPow(int n, int p) {
-    int a[10];
-    int size = sizeof(a) / sizeof(a[0]);
-    int i = 0;
-    int sum = 0;
-    int np = p;
-    int d = n;
-    while(n>0){
-        a[i] = n%10;
-        n = n/10;
-        i++;
+int fibi(int n){
+    if(n>=3){
+        return fibi(n-1) + fibi(n-2);
+    }else{
+        return 1;
     }
 
-    for(int j = i -1; j >= 0; j--){
-            int temp = a[j];
-            sum = sum + pow(temp,np);
-            np++;
-    }
-    int k = sum/d;
-    if(sum % d == 0){
-        return k;
-    }else if(sum % d != 0){
-        return -1;
-    }
+}
+//5 = 5x4x3x2x1
+//n! = (n-1)*(n-2)
 
-    return 0;
+//24 = 4 * 3
+//6 = 3 * 2
+//2 = 2 * 1
+//1 = 1 * 1
+//1 = 1 * 1
+int fact(int n){
+    if(n <= 1){
+        return 1;
+    }else{
+        return (n-1) * fact(n-1);
+    }
 }
 
 
-
 int main() {
-
-    // Test case 1
-    int result1 = digPow(89, 1);
-    printf("digPow(89, 1) = %d\n", result1);
-
-    // Test case 2
-    int result2 = digPow(92, 1);
-    printf("digPow(92, 1) = %d\n", result2);
-
-    // Test case 3
-    int result3 = digPow(695, 2);
-    printf("digPow(695, 2) = %d\n", result3);
-
-    // Test case 4
-    int result4 = digPow(46288, 3);
-    printf("digPow(46288, 3) = %d\n", result4);
-
-
+    printf("%d",fact(5));
     return 0;
 }
 
