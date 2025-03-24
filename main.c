@@ -3,58 +3,51 @@
 #include <stdbool.h>
 #include <string.h>
 #include <assert.h>
+#include <ctype.h>
 #include <time.h>
 #include <math.h>
 
-int digPow(int n, int p) {
-    int a[10];
-    int size = sizeof(a) / sizeof(a[0]);
-    int i = 0;
-    int sum = 0;
-    int np = p;
-    int d = n;
-    while(n>0){
-        a[i] = n%10;
-        n = n/10;
-        i++;
-    }
+#define LOWER  0
+#define UPPER 300
+#define STEP 20
+float convertToC(float f){
+  float c = (5.0/9.0) * (f-32.0) ;
+  return c;
+}
 
-    for(int j = i -1; j >= 0; j--){
-            int temp = a[j];
-            sum = sum + pow(temp,np);
-            np++;
-    }
-    int k = sum/d;
-    if(sum % d == 0){
-        return k;
-    }else if(sum % d != 0){
-        return -1;
-    }
-
-    return 0;
+float convertToF(float c) {
+    float f = c *9.0/5.0 + 32.0;
+    return f;
 }
 
 
 
 int main() {
+    puts("you will give me a newline?");
+    printf("F to C %f\n", convertToC(100.00));
+    printf("C to F %f\n", convertToF(100));
 
-    // Test case 1
-    int result1 = digPow(89, 1);
-    printf("digPow(89, 1) = %d\n", result1);
+    float f = 0.0;
+    float c = 0.0;
+    float update = 0.0;
 
-    // Test case 2
-    int result2 = digPow(92, 1);
-    printf("digPow(92, 1) = %d\n", result2);
+    //going in assending order
+    do{
+        printf("Converting Fah to Cel %2.0f ", convertToC(f));
+        printf("Converting Cel to Fah %2.0f\n" , convertToF(c));
 
-    // Test case 3
-    int result3 = digPow(695, 2);
-    printf("digPow(695, 2) = %d\n", result3);
+        update += STEP;
+        c = update; f = update;
+    }while(update < UPPER);
 
-    // Test case 4
-    int result4 = digPow(46288, 3);
-    printf("digPow(46288, 3) = %d\n", result4);
+    //going in desending order
 
-
+    puts("Desenidng order with a forloop:");
+    for (update = UPPER; update > 0; update -= STEP) {
+        c = update; f = update;
+        printf("Converting C to F %2.0f ",convertToF(c));
+        printf("Converting F to C %2.0f\n", convertToC(f));
+    }
     return 0;
 }
 
