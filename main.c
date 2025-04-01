@@ -34,11 +34,40 @@ bool isValid(char* s) {
        return false;
 }
 
+typedef struct {
+    size_t length;
+    char buffer[64];
+} TextBuffer;
+
+int smart_append(TextBuffer* dest, const char* src) {
+    // ?
+    if(src == NULL || dest == NULL){
+        return 1;
+    }
+    int constVar = 64;
+    int length = strlen(src);
+    int remaining = constVar - dest->length -1;
+    if(length > remaining) {
+        strncat(dest->buffer,src,remaining);
+        dest->length = constVar -1;
+        return 1;
+    }
+    strcat(dest->buffer,src);
+    dest->length = length;
+    return 0;
+}
+
+
 
 int main() {
-    char* a = "(]";
-    printf("%hhd", isValid(a));
-    isValid(a);
+TextBuffer dest;
+strcpy(dest.buffer, "This is a very long string that will fill up the entire buffer.");
+dest.length = 63;
+const char* src = " Extra";
+int result = smart_append(&dest, src);
+    printf("%d", result);
+    printf("%s", dest.buffer);
+    printf("%zu",&dest.length);
     return 0;
 }
 
