@@ -2,76 +2,44 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 
-bool isValid(char* s) {
-    int a = strlen(s);
-    if (a % 2 != 0) {
-        return false;
-    }
+typedef enum WeaponType {
+    STRING_SCROLL,
+    INT_DAMAGE,
+    FLOAT_HEALING,
+}weapon_t;
 
-    int aSize =  strlen(s)/2; //
-    int top = -1;
+typedef union weapon {
+    char scroll[20];
+    int damage;
+    float healing;
+}one_weapon;
 
-    char e[aSize]; //array for the ending
-    // formula for the top index + top
-    for(int i = 0; s[i] != '\0'; i++) {
-        if (s[i] == '(' || s[i] == '{' || s[i] == '[') {
-            top++;
-            e[top] = s[i];
-        }
+typedef struct SelectedWeapon {
+    weapon_t weaponType;
+    one_weapon weapon;
+}sel_weapon;
 
-        if (s[i] == ')' || s[i] == '}' || s[i] == ']') {
-            if (e[top] == '(' && s[i] == ')' || e[top] == '{' && s[i] == '}' || e[top] == '[' && s[i] == ']') {
-                top--;
-            }
-
-        }
-    }
-
-    if (top == -1) {
-       return  true;
-    }
-       return false;
-}
-
-typedef struct {
-    size_t length;
-    char buffer[64];
-} TextBuffer;
-
-int smart_append(TextBuffer* dest, const char* src) {
-    // ?
-    if(src == NULL || dest == NULL){
-        return 1;
-    }
-    int constVar = 64;
-    int length = strlen(src);
-    int remaining = constVar - dest->length -1;
-    if(length > remaining) {
-        strncat(dest->buffer,src,remaining);
-        dest->length = constVar -1;
-        return 1;
-    }
-    strcat(dest->buffer,src);
-    dest->length = length;
-    return 0;
-}
-
-
+void print_weapon(sel_weapon *w);
 
 int main() {
-TextBuffer dest;
-strcpy(dest.buffer, "This is a very long string that will fill up the entire buffer.");
-dest.length = 63;
-const char* src = " Extra";
-int result = smart_append(&dest, src);
-    printf("%d", result);
-    printf("%s", dest.buffer);
-    printf("%zu",&dest.length);
+    sel_weapon a = {.weaponType = STRING_SCROLL, .weapon  = "str+5" };
+    print_weapon(&a);
     return 0;
 }
-
-
-
+void print_weapon(sel_weapon* s) {
+    switch (s->weaponType) {
+        case STRING_SCROLL:
+            printf("woah you have the scroll of %s, that is super cool!",s->weapon.scroll);
+        break;
+        case INT_DAMAGE:
+            printf("WOAH! now thats a lotta dmage: %d", s->weapon.damage);
+        break;
+        case FLOAT_HEALING:
+            printf("You were just critted my G, now time to heal: %f", s->weapon.healing);
+        break;
+    }
+}
 
 
