@@ -23,23 +23,35 @@ typedef struct SelectedWeapon {
 
 void print_weapon(sel_weapon *w);
 
+char* get_full_greeting(char *greeting, char *name, int size);
+int *allocate_scalar_list(int size, int multiplier);
+
 int main() {
-    sel_weapon a = {.weaponType = STRING_SCROLL, .weapon  = "str+5" };
-    print_weapon(&a);
+    int *result = allocate_scalar_list( 5, 1);
+
+    for (int i =0; i<5;i++) {
+        printf("%d\n",*(result+i) );
+    }
+    free(result);
+
+
     return 0;
 }
-void print_weapon(sel_weapon* s) {
-    switch (s->weaponType) {
-        case STRING_SCROLL:
-            printf("woah you have the scroll of %s, that is super cool!",s->weapon.scroll);
-        break;
-        case INT_DAMAGE:
-            printf("WOAH! now thats a lotta dmage: %d", s->weapon.damage);
-        break;
-        case FLOAT_HEALING:
-            printf("You were just critted my G, now time to heal: %f", s->weapon.healing);
-        break;
+
+int *allocate_scalar_list(int size, int multiplier) {
+    int *malArray = (int* )malloc(size * sizeof(int));
+    if(malArray == NULL){
+        printf("Memory allocation failed\n");
+        exit(1);
     }
+
+
+    for(int i = 0; i<size;i++){
+        malArray[i] = (i * multiplier);
+    }
+
+    return malArray;
+    // ?
 }
 
 
