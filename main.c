@@ -21,37 +21,45 @@ typedef struct SelectedWeapon {
     one_weapon weapon;
 }sel_weapon;
 
-void print_weapon(sel_weapon *w);
+typedef struct Token {
+    char* literal;
+    int line;
+    int column;
+} token_t;
 
-char* get_full_greeting(char *greeting, char *name, int size);
-int *allocate_scalar_list(int size, int multiplier);
+token_t** create_token_pointer_array(token_t* tokens, size_t count);
 
 int main() {
-    int *result = allocate_scalar_list( 5, 1);
-
-    for (int i =0; i<5;i++) {
-        printf("%d\n",*(result+i) );
+    token_t tokens[3] = {
+        {"foo", 1, 1},
+        {"bar", 2, 5},
+        {"baz", 3, 10}
+    };
+    token_t** result = create_token_pointer_array(tokens, 3);
+    for (int i = 0; i < 3; i++) {
+        printf("%s", result[i]->literal);
+        printf("%s", tokens[i].literal);
+        puts("end");
     }
-    free(result);
-
-
     return 0;
 }
 
-int *allocate_scalar_list(int size, int multiplier) {
-    int *malArray = (int* )malloc(size * sizeof(int));
-    if(malArray == NULL){
-        printf("Memory allocation failed\n");
+
+token_t** create_token_pointer_array(token_t* tokens, size_t count) {
+    token_t **token_pointers = malloc(count * sizeof(token_t*));
+
+
+    if (token_pointers == NULL) {
         exit(1);
     }
-
-
-    for(int i = 0; i<size;i++){
-        malArray[i] = (i * multiplier);
+    for (int i=0; i< count; i++) {
+        token_t *p = (token_t*)malloc(sizeof(token_t)* count);
+        //assigen my pointer-pointer to my pointer that points to the heap
+        token_pointers[i] = &p[i];
+        //take my pointer that points to the heap, dereferance it and copy obver the values of token
+        *(p + i) = *(tokens+i);
     }
-
-    return malArray;
-    // ?
+    return token_pointers;
 }
 
 
